@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}News{% endblock %}
+{% block head %}News{% endblock %}
+{% block style %}
+<style type="text/css">
+</style>
+{% endblock %}
+{% block content %}
+
+{% if user.username %}
+<a href=https://bitbucket.org/thenmal/lotr-online/issues>Open Issues</a>
+{% else %}
+	<p>[<a href="/login/">login</a>]</p>
+{% endif %}
+{% endblock %}

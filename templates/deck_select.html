@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Decks{% endblock %}
+{% block head %}Decks{% endblock %}
+{% block content %}
+	<b><p>Current Decks</p></b>
+	{% for deck in decks %}
+	<p><a href="./{{ deck.id }}">{{ deck.name }}</a></p>
+	{% endfor %}
+
+	<b><p>Create New Deck</p></b>
+	
+	<form method="post" action=".">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="Create" />
+	</form>
+{% endblock %}

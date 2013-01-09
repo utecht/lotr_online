@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Registation{% endblock %}
+{% block head %}Registration{% endblock %}
+{% block content %}
+{% if form.errors %}
+<p>{{ form.error }}</p>
+{% endif %}
+
+<form method="post" action=".">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" value="register" />
+</form>
+{% endblock %}

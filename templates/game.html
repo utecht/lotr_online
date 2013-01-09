@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}game{% endblock %}
+{% block head %}{{p1}} v {{p2}}{% endblock %}
+{% block style %}
+<style type="text/css">
+div.PlayArea{
+	float:left;
+	width:1000px;
+	height:700px;
+	background-color:#d0e4fe;
+}
+div.DeckArea{
+	background-color:#f0e4fe;
+	width:195px;
+	margin-left:1005px;
+	height:450px;
+}
+div.HandArea{
+	background-color:#e890a6;
+	width:1000px;
+	height:150px;
+}
+div.DiscardArea{
+	background-color:#e66081;
+	width:195px;
+	margin-left:1005px;
+	height:250px;
+}
+#chat{
+	float:left;
+        width: 600px;
+        height: 150px;
+}
+img.draggable{
+	position:absolute;	
+}
+</style>
+<link rel="stylesheet" href="/site_media/css/smoothness/jquery-ui-1.8.11.custom.css" type="text/css" />
+{% endblock %}
+{% block content %}
+<script type="text/javascript" src="/site_media/client.js"></script>
+<script type="text/javascript" src="/site_media/jtimers.js"></script>
+<script type="text/javascript" src="/site_media/jQueryRotate.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery-ui-1.8.11.custom.min.js"></script>
+<div id="Load">
+<div id="Table" style=width:1200px>
+<div class="PlayArea droppable">
+{% for card in cards %}
+<img style=top:{{card.yLoc}}px;left:{{card.xLoc}}px;  id={{card.id}} class="draggable{% if user != card.owner %} upside{% endif %}" src="/site_media/images/cards/LOTR0{{ card.card.num }}_t.jpg"></img>
+{% endfor %}
+</div>
+<div class="DeckArea"><p>Deck</p>
+<b>Total Cards:</b> {{ deckCount }}
+<input id="draw" type="submit" value="Draw" />
+<input id="search_field" type="text" name="Search" style=width:150px />
+<input id="search_hand" type="submit" value="Search to hand" />
+<input id="search_table" type="submit" value="Search to table" />
+</div>
+<div class="DiscardArea droppable">Discard</div>
+<div class="HandArea droppable">
+	Hand
+{% for card in hand %}
+<img style=top:{{card.yLoc}}px;left:{{card.xLoc}}px; class="draggable" id={{card.id}} src="/site_media/images/cards/LOTR0{{ card.card.num }}_t.jpg"></img>
+{% endfor %}
+</div>
+</div>
+</div>
+{% include "chat.html" %}
+{% endblock %}

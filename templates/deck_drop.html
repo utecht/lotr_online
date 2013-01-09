@@ -1,0 +1,9 @@
+<form style=float:left action="">
+Deck to use:
+<select class="deck_drop" name="deck">
+{% for deck in decks %}
+<option value="{{ deck.id }}">{{ deck.name }}</option>
+{% endfor %}
+</select>
+
+</form>

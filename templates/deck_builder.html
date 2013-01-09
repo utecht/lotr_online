@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Deck Builder{% endblock %}
+{% block head %}Deck Builder{% endblock %}
+{% block style %}
+<style type="text/css">
+div.AllCards {
+	float:left;
+	width:450px;
+	margin:0;
+	padding:1em;
+}
+div.Deck {
+	margin-left:550px;
+	padding:1em;
+}
+
+/** closure table sorting styles **/
+th.header {
+	font-weight: bold;
+	cursor: pointer
+}
+th.headerSortDown {
+	background-color: #eef;
+}
+th.headerSortUp {
+	background-color: #fee;
+}
+</style>
+{% endblock %}
+{% block script %}
+<script src="/site_media/imgtooltip.js"></script>
+<script src="/site_media/jQuery.uitablefilter.js"></script>
+<script src="/site_media/jquery.tablesorter.min.js"></script>
+<script>
+$(function(){
+	$("a[href*='.jpg']").thumbPopup();
+});
+
+function deckPop(){
+	$("a[href*='.jpg'][id='deckImage']").thumbPopup();
+}
+</script>
+{% endblock %}
+{% block content %}
+{% if user.username %}
+<div class="AllCards">
+<b><p>All Cards</p></b>
+<table border="0" cellpang="3" id="AllCardsTable" class="tablesorter">
+<thead>
+	<tr>
+		<th>Card Name</th>
+		<th>Cost</th>
+		<th width=100px>Race</th>
+	</tr>
+</thead>
+<tbody>
+{% include "card_table.html" %}
+</tbody>
+</table>
+</div>
+<div class="Deck">
+<p><b>Deck:</b> {{ deck.name }}</p>
+<table border="0" cellpang="3" id="DeckTable">
+<thead>
+	<tr>
+		<th>Card Name</th>
+		<th>Cost</th>
+		<th>Race</th>
+		<th>Qty</th>
+	</tr>
+</thead>
+<tbody id="deckBody">
+{% include "deck_table.html" %}
+</tbody>
+</table>
+</div>
+<script>
+var loading = false; 
+function ajax(a){
+	a.preventDefault();
+	if(!loading){
+		loading = true;
+		var link = a.currentTarget.href + ' #DeckTable';
+		//alert(link);
+		$('#DeckTable').load(link, function(){
+			loading = false;
+			deckPop();
+			$('[id$=del]').bind("click", ajax);
+		});
+	}
+}	
+$(document).ready(function(){
+	$('[id$=add]').bind("click", ajax);
+	$('[id$=del]').bind("click", ajax);
+	$table = $('#AllCardsTable').tablesorter({widthFixed: true});
+	FilterText = "";
+	ColumnArray = ["Cost", "Race"];
+	for (i=1;i<ColumnArray.length + 1;i++){
+		$("#AllCardsTable tbody tr").find("td:eq(" + i + ")").click(function(){
+			clickedText = $(this).text();
+			FilterText = ((FilterText == clickedText) ? "" : clickedText );
+			$.uiTableFilter( $table, FilterText, ColumnArray[i]);
+		});
+	}
+});
+</script> 
+</script> 
+{% else %}
+<p>[<a href="/login/">login</a>]</p>
+{% endif %}
+{% endblock %}

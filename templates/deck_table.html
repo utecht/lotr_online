@@ -1,0 +1,9 @@
+{% for dc in deckCards %}
+	<tr>
+		<td><a href="/site_media/images/cards/LOTR0{{ dc.cardID.num }}.jpg" id="deckImage">{{ dc.cardID.name }}</a></td>
+		<td>{{ dc.cardID.cost }}</td>
+		<td>{{ dc.cardID.race }}</td>
+		<td>{{ dc.qty }}</td>
+		<td><a href="/deck_builder/{{ deck.id }}/del/{{ dc.cardID.id }}" id="del">[del]</a></td>
+	</tr>
+{% endfor %}

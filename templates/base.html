@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title>lotr-online | {% block title %}{% endblock %}</title>
+		<script type="text/javascript" src="/site_media/jquery.js"></script>
+		<link rel="stylesheet" href="/site_media/style.css" type="text/css" />
+		{% block style %}{% endblock %}
+		{% block script %}{% endblock %}
+	</head>
+	<body>
+		<div id="nav">
+			<a href="/">News</a>
+			{% if user.is_authenticated %}
+				<a href='/games'>Games</a>
+				<a href='/deck_builder'>Decks</a>
+				welcome {{ user.username }}
+				[<a href="/logout">logout</a>]
+			{% else %}
+				[<a href="/login">login</a>]
+			{% endif %}
+		</div>
+		<h1>{% block head %}{% endblock %}</h1>
+		{% block content %}{% endblock %}
+	</body>
+</html>

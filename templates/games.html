@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Games{% endblock %}
+{% block head %}Games{% endblock %}
+{% block style %}
+<style type="text/css">
+#chat{
+	width:85%;
+	height:300px;
+}
+div.proposalDiv {
+	margin-left:200px;
+}
+</style>
+{% endblock %}
+{% block content %}
+
+{% if user.username %}
+<b><p>Incoming Proposals</p></b>
+{% for proposal in incomingProposals %}
+<div style=float:left>{{proposal}}</div>
+<div class="proposalDiv proposal{{proposal.id}}">
+{% include "deck_drop.html" %}
+<a href="/accept/{{proposal.id}}" id="{{proposal.id}}" class="{{proposal.id}} accept">[accept]</a> <a href="/decline/{{proposal.id}}">[decline]</a>
+<p>--{{proposal.message}}</p>
+</div>
+{% endfor %}
+
+<b><p>Outgoing Proposals</p></b>
+{% for proposal in outgoingProposals %}
+<p>{{proposal}} <a href="/decline/{{proposal.id}}">[cancel]</a></p>
+<p>{{proposal.message}}</p>
+{% endfor %}
+
+<b><p>Current Games </p></b>
+{% for game in games %}
+<p><a href="/game/{{ game.id }}">{{ game }}</a>  --  {{game.p1Deck}}</p>
+{% endfor %}
+{% for game in games2 %}
+<p><a href="/game/{{ game.id }}">{{ game }}</a>  --  {{game.p2Deck}}</p>
+{% endfor %}
+
+<b><p>Propose Game</p></b>
+<div class="proposal_div">
+{{ userDrop.as_p }}
+{% include "deck_drop.html" %}
+<input style=float:left;width:300px name="Message" type="text" class="proposal-message"/>
+<input class="propose-button" type="submit" value="Propose Game" />
+</div>
+<script>
+
+function accept(a){
+	var id = a.target.id;
+	var url = a.target.href;
+	var selector = ".proposal" + id + " > form > .deck_drop";
+	var deckID = $(selector).val();
+	url += "/" + deckID;
+	a.target.href = url;
+}
+
+
+function propose(e){
+	var message = $(".proposal-message").val();
+	var recipient = $("#id_usersDrop").val();
+	var deck = $(".proposal_div > form > .deck_drop").val();
+	if( recipient == ""){
+		alert("Please select a user to propose game to.");
+	} else {
+		var values = {};
+		values['message'] = message;
+		values['deck'] = deck;
+		values['recipient'] = recipient;
+		$.ajax({
+			data: values,
+			type: 'post',
+			url:"/propose/",
+			success: function(){
+				window.location.reload();
+			}
+		});	
+	}
+}
+
+$(document).ready(function(){
+	$(".accept").bind("click", accept);
+	$(".propose-button").bind("click", propose);
+});
+
+</script>
+
+{% include "chat.html" %}
+{% else %}
+	<p>[<a href="/login/">login</a>]</p>
+{% endif %}
+{% endblock %}

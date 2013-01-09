@@ -1,0 +1,8 @@
+{% for card in cards %}
+	<tr>
+		<td><a href="/site_media/images/cards/LOTR0{{ card.num }}.jpg">{{ card.name }}</a></td>
+		<td>{{ card.cost }}</td>
+		<td>{{ card.race }}</td>
+		<td><a href="/deck_builder/{{ deck.id }}/add/{{ card.id }}" id="add">[add]</a></td>
+	</tr>
+{% endfor %}
